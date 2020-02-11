@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script src="https://cdn-webgl.wrld3d.com/wrldjs/dist/latest/wrld.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.1/leaflet.css" rel="stylesheet" />
+
+    <link href="https://cdn-webgl.wrld3d.com/wrldjs/addons/resources/latest/css/wrld.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://cdn-webgl.wrld3d.com/wrldjs/addons/searchbar/latest/searchbar.js"></script>
+    <script src="https://cdn-webgl.wrld3d.com/wrldjs/addons/marker_controller/latest/marker_controller.js"></script>
+
+</head>
+
+<body>
+<div style="position: relative">
+    <div id="widget-container" class="wrld-widget-container"></div>
+    <div id="map" style="height: 400px"></div>
+    <script>
+        var map = L.Wrld.map("map", "53a0af659efde509ec1db00e6d31b0b3", {
+            center: [37.79505, -122.40815],
+            zoom: 15
+        });
+
+        var searchbarConfig = {
+            apiKey: "53a0af659efde509ec1db00e6d31b0b3",
+            outdoorSearchMenuItems: [
+                        {
+                            name: "The Sir Ian Wood Building", latLng: [37.7952, -122.4028],
+                            search_tag: "education",
+                            icon_key: "home",
+                            skip_yelp_search: true
+                        },
+                {name: "Around Me", searchTag: "", iconKey: "aroundme"},
+                {name: "Tourism", searchTag: "tourist_info", iconKey: "tourist_info"}
+            ],
+            locationJumps: [
+                {name: "San Francisco", latLng: [37.7952, -122.4028]}
+            ]
+        };
+        var places = [
+            {title: "RGU Sport", location: { latLng: L.latLng(57.118629, -2.137435) , 
+                    height_offset: 0,
+                    user_data:
+                        {
+                            address: "Garthdee Campus, Garthdee Rd, Garthdee, Aberdeen AB10 7GE, United Kingdom",
+                            phone: "+44 1224 263666",
+                            web: "https://www.rgu.ac.uk/rgusport",
+                            image_url: "https://www.rgu.ac.uk/images/stories/flexicontent/mediaman/l_RGU-Sport-Facilities-ZF-2019_28082019_108.jpg"
+                        },
+                    tags: ["sports"],},
+            },
+            {title: "A Place to Stay", location: { latLng: L.latLng(37.7918, -122.401) }, tags: ["accommodation"], iconKey: "accommodation"},
+            {title: "A Grand Hotel", location: { latLng: L.latLng(37.7928, -122.402) }, tags: ["hotel", "accommodation"], iconKey: "hotel"},
+            {title: "Wine & Dine", subtitle: "California St, San Francisco", location: { latLng: L.latLng(37.7922, -122.406) }, tags: ["wine", "food_drink"], iconKey: "wine"},
+            {title: "San Fran Burgers", subtitle: "Powell St, San Francisco", location: { latLng: L.latLng(37.7905, -122.409) }, tags: ["burgers", "food_drink"], iconKey: "burgers"}
+        ];
+        var searchbar = new WrldSearchbar("widget-container", map, searchbarConfig);
+        var markerController = new WrldMarkerController(map, {
+            searchbar: searchbar,
+            poiViewsEnabled: true
+        });
+
+        searchbar.on("searchresultselect", goToResult);
+
+        function goToResult(event) {
+            markerController.openPoiView(event.result.sourceId);
+            map.setView(event.result.location.latLng, 15);
+        }
+    </script>
+
+</div>
+</body>
+</html>
+
+v0.
